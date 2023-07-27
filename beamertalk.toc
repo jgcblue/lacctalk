@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Data Set: Fake Twitter Data}{5}{0}{2}
+\beamer@sectionintoc {3}{Python and Linear Regression}{9}{0}{3}
+\beamer@sectionintoc {4}{An Example}{10}{0}{4}
+\beamer@subsectionintoc {4}{1}{Data Collection}{10}{0}{4}

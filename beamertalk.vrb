@@ -1,0 +1,16 @@
+\frametitle{The Model We Have Created\ldots}
+Model Coefficients:
+Model Intercept (only one):
+
+Mean Squared Error:
+	\py{model_cos}\\
+	and MSE (means squared error)\\\
+	\py{mse}
+	\py{coefficients}\\
+	and intercept \ldots\\
+	\py{intercept}\\
+	and as a formula:\\
+	\py{latex_expression}
+	\includegraphics[width=\textwidth]{r2.png}
+%coefficients = regr.coef_[0]
+%intercept = regr.intercept_

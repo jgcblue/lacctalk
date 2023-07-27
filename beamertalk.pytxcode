@@ -1,0 +1,163 @@
+=>PYTHONTEX#py#default#default#0#code#####270#
+import pandas as pd
+# Assuming you have a CSV file named 'data.csv' in the same directory
+df = pd.read_csv('../pe/dlc/linear_data.csv')
+limited_df = df.head(7)
+# Convert the DataFrame to a LaTeX table and save it as a string
+latex_table = limited_df.to_latex(index=False)
+=>PYTHONTEX#py#default#default#1#i#####8#
+latex_table
+=>PYTHONTEX#py#default#default#2#code#####341#
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+sns.scatterplot(data=df, x='ages', y='rates')
+
+plt.savefig('scatter_plot.png')
+=>PYTHONTEX#py#default#default#3#code#####365#
+	
+	# Drop negative values
+df = df[df['rates'] >= 0]
+# Drop null values
+df = df.dropna()
+
+# Display the first few rows of the dataframe
+df.head()
+Q1 = df.quantile(0.25)
+Q3 = df.quantile(0.75)
+IQR = Q3 - Q1
+
+# Remove outliers
+df_no_outliers = df[~((df < (Q1 - .8 * IQR)) | (df > (Q3 + .8 * IQR))).any(axis=1)]
+
+# Display the first few rows of the dataframe without outliers
+df_no_outliers.head()
+# Plot ages versus rates for the original dataframe
+plt.figure(figsize=(10, 5))
+plt.subplot(1, 2, 1)
+plt.scatter(df['ages'], df['rates'])
+plt.title('Original Data')
+plt.xlabel('Ages')
+plt.ylabel('Rates')
+
+# Plot ages versus rates for the dataframe without outliers
+plt.subplot(1, 2, 2)
+plt.scatter(df_no_outliers['ages'], df_no_outliers['rates'])
+plt.title('Data Without Outliers')
+plt.xlabel('Ages')
+plt.ylabel('Rates')
+
+plt.tight_layout()
+plt.savefig('scatter_plots2.png')  # Save the scatter plots
+plt.close()
+
+# Box and whisker plots
+plt.figure(figsize=(10, 5))
+plt.subplot(1, 2, 1)
+df.boxplot(column=['rates'])
+plt.title('Original Data')
+
+plt.subplot(1, 2, 2)
+df_no_outliers.boxplot(column=['rates'])
+plt.title('Data Without Outliers')
+
+plt.tight_layout()
+plt.savefig('scatter_plots3.png')  # Save the scatter plots
+plt.close()
+
+	
+=>PYTHONTEX#py#default#default#4#code#####479#
+import pickle
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+X = df_no_outliers[['ages']]
+y = df_no_outliers['rates']
+
+	# Split the data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a linear regression object
+regr = LinearRegression()
+
+# Train the model using the training sets
+regr.fit(X_train, y_train)
+
+# Make predictions using the testing set
+y_pred = regr.predict(X_test)
+
+# Print the coefficients
+#print('Coefficients:', regr.coef_)
+model_cos=regr.coef_
+
+coefficients = regr.coef_[0]
+intercept = regr.intercept_
+# Print the mean squared error
+#print('Mean squared error:', mean_squared_error(y_test, y_pred))
+mse=mean_squared_error(y_test, y_pred)
+
+latex_expression = f"$y = {coefficients:.2f}x + {intercept:.2f}$"
+
+# Print the coefficient of determination (R^2 score)
+#print('Coefficient of determination (R^2 score):', r2_score(y_test, y_pred))
+structures_to_pickle = {
+    'model': regr,
+    'X_train': X_train,
+    'y_train': y_train,
+    'X_test': X_test,
+    'y_test': y_test
+}
+with open('modelplus.pkl', 'wb') as file:
+    pickle.dump(structures_to_pickle, file)
+
+#r2score=r2_score(y_test,y_pred)
+=>PYTHONTEX#py#default#default#5#i#####6#
+model_cos
+=>PYTHONTEX#py#default#default#6#i#####8#
+mse
+=>PYTHONTEX#py#default#default#7#i#####9#
+coefficients
+=>PYTHONTEX#py#default#default#8#i#####11#
+intercept
+=>PYTHONTEX#py#default#default#9#i#####13#
+latex_expression
+=>PYTHONTEX#py#default#default#10#code#####629#
+plt.scatter(X_test, y_test, color='black')
+plt.plot(X_test, y_pred, color='blue', linewidth=3)
+plt.title('Linear Regression Model')
+plt.xlabel('Ages')
+plt.ylabel('Rates')
+plt.savefig('plot5.png')
+
+# Plot residuals
+plt.scatter(y_pred, y_test - y_pred, color='black')
+plt.hlines(y=0, xmin=y_test.min(), xmax=y_test.max(), color='blue')
+plt.title('Residuals')
+plt.xlabel('Predicted')
+plt.ylabel('Residuals')
+plt.savefig('plot6.png')
+=>PYTHONTEX:SETTINGS#
+version=0.18
+outputdir=pythontex-files-beamertalk
+workingdir=.
+workingdirset=false
+gobble=none
+rerun=default
+hashdependencies=default
+makestderr=false
+stderrfilename=full
+keeptemps=none
+pyfuture=default
+pyconfuture=none
+pygments=true
+pygglobal=:GLOBAL||
+fvextfile=-1
+pyconbanner=none
+pyconfilename=stdin
+depythontex=false
+pygfamily=py|python3|
+pygfamily=pycon|pycon|
+pygfamily=sympy|python3|
+pygfamily=sympycon|pycon|
+pygfamily=pylab|python3|
+pygfamily=pylabcon|pycon|

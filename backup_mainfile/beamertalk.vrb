@@ -1,0 +1,19 @@
+\stepcounter{slidenum}
+	\frametitle{Gathering the Model's Parameters and Testing}
+	\begin{lstlisting}[firstnumber=12]
+# Make predictions using the testing set
+y_pred = regr.predict(X_test)
+# Print the coefficients
+#print('Coefficients:', regr.coef_)
+model_cos=regr.coef_
+
+# Print the mean squared error
+#print('Mean squared error:', mean_squared_error(y_test, y_pred))
+mse=mean_squared_error(y_test, y_pred)
+
+coefficients = regr.coef_[0]
+intercept = regr.intercept_
+# Print the coefficient of determination (R^2 score)
+#print('Coefficient of determination (R^2 score):', r2_score(y_test, y_pred))
+r2score=r2_score(y_test,y_pred)
+	\end{lstlisting}
